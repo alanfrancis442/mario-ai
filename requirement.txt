@@ -1,4 +1,4 @@
-ale-py==0.11.2
+ale-py==0.10.1
 cloudpickle==3.1.1
 colorama==0.4.6
 Farama-Notifications==0.0.4
