@@ -209,7 +209,7 @@ class Mario(MarioAgent):
 
 
 if __name__ == "__main__":
-    CHECKPOINT_PATH = "./checkpoints/2025-10-14T21-49-50/mario_net_0.chkpt"  # 2. Set up the Environment (MUST be identical to your training setup)
+    CHECKPOINT_PATH = "./checkpoints/2025-10-12T00-21-50/mario_net_0.chkpt"  # 2. Set up the Environment (MUST be identical to your training setup)
     env = gym_super_mario_bros.make(
         "SuperMarioBros-1-1-v0", apply_api_compatibility=True, render_mode="human"
     )
