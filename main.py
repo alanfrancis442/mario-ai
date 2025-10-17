@@ -95,9 +95,10 @@ class MarioAgent:
             state = (
                 state[0].__array__() if isinstance(state, tuple) else state.__array__()
             )
-            state = torch.tensor(state, device=self.device).unsqueeze(0)
-            action_values = self.net(state, model="online")
-            action_idx = torch.argmax(action_values, dim=1).item()
+            with torch.no_grad():
+                state = torch.tensor(state, device=self.device).unsqueeze(0)
+                action_values = self.net(state, model="online")
+                action_idx = torch.argmax(action_values, dim=1).item()
 
         self.exploration_rate *= self.exploration_rate_decay
         self.exploration_rate = max(self.exploration_rate, self.exploration_rate_min)
@@ -208,7 +209,7 @@ class Mario(MarioAgent):
 
 
 if __name__ == "__main__":
-    CHECKPOINT_PATH = "./checkpoints/2025-10-12T00-21-50/mario_net_0.chkpt"  # 2. Set up the Environment (MUST be identical to your training setup)
+    CHECKPOINT_PATH = "./checkpoints/2025-10-14T21-49-50/mario_net_0.chkpt"  # 2. Set up the Environment (MUST be identical to your training setup)
     env = gym_super_mario_bros.make(
         "SuperMarioBros-1-1-v0", apply_api_compatibility=True, render_mode="human"
     )
@@ -229,14 +230,16 @@ if __name__ == "__main__":
     checkpoint = torch.load(
         CHECKPOINT_PATH,
         map_location=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
+        weights_only=False,
     )  # Use 'cpu' if you don't have a GPU
     mario.net.load_state_dict(checkpoint["model"])
+    mario.net.to(mario.device)
 
     # 5. Set the agent to Evaluation Mode
     #    This is crucial! It tells the model to only use its learned knowledge.
     mario.exploration_rate = 0.0  # Turn off exploration completely
     mario.net.eval()
-
+    torch.set_grad_enabled(False)
     print("Loaded model! Starting gameplay...")
 
     # 6. The "Play" Loop
