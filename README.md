@@ -1,5 +1,9 @@
 # 🎮 Mario AI - Deep Q-Learning Agent
 
+
+https://github.com/user-attachments/assets/b0ed4988-fff7-451b-bb8d-f03e6a47d8ef
+
+
 An AI agent that learns to play Super Mario Bros using Deep Q-Learning (DQN) with PyTorch.
 
 ## 📋 Table of Contents
